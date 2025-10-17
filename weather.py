@@ -13,6 +13,7 @@ def format_temperature(temp):
     Returns:
         A string contain the temperature and "degrees Celcius."
     """
+
     return f"{temp}{DEGREE_SYMBOL}"
 
 
@@ -24,7 +25,14 @@ def convert_date(iso_string):
     Returns:
         A date formatted like: Weekday Date Month Year e.g. Tuesday 06 July 2021
     """
-    pass
+
+    # The fromisoformat() method in Python's datetime module is used to parse a string in ISO 8601 format and return a datetime object. This method provides a convenient way to convert standardized date and time strings into Python's native datetime objects. 
+    iso_readable = datetime.fromisoformat(iso_string)
+
+    # The strftime() method in Python's datetime module is used to format datetime objects into readable strings based on specified format codes.
+    return iso_readable.strftime("%A %d %B %Y")
+
+
 
 
 def convert_f_to_c(temp_in_fahrenheit):
