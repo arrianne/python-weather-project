@@ -43,7 +43,13 @@ def convert_f_to_c(temp_in_fahrenheit):
     Returns:
         A float representing a temperature in degrees Celcius, rounded to 1 decimal place.
     """
-    pass
+  
+    # To convert Fahrenheit to Celsius, subtract 32 from the Fahrenheit temperature and then divide the result by 1.8
+    temp_in_celsius = (temp_in_fahrenheit - 32) * 5.0 / 9.0
+
+    # for 1 decimal place - rounded_number = round(number, 1)
+    return round(temp_in_celsius, 1)
+
 
 
 def calculate_mean(weather_data):
