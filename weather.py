@@ -61,8 +61,15 @@ def calculate_mean(weather_data):
     Returns:
         A float representing the mean value.
     """
+
+    if not weather_data:
+        return 0.0  # Avoid ZeroDivisionError if list is empty
+    
+    # Convert all values to float
+    numbers = [float(temp) for temp in weather_data]
     # Add up all the numbers and divide by how many numbers there are
-    return sum(weather_data) / len(weather_data)
+    return sum(numbers) / len(numbers)
+    
 
 # example = [51.0, 58.2, 59.9, 52.4, 52.1, 48.4, 47.8, 53.43]
 # print(calculate_mean(example))  # Should return 30.0
@@ -104,13 +111,17 @@ def find_min(weather_data):
     # If weather_data is empty (has no elements), then not weather_data is True.
     if not weather_data:
         return ()
-    # find min value
-    min_value = min(weather_data)
+    
+    # Convert all values to float for comparison
+    temps_float = [float(value) for value in weather_data]
 
-     # Find last index where min_value appears
-    for num in range(len(weather_data) - 1, -1, -1):
-        if weather_data[num] == min_value:
-            return float(min_value), num  # Ensure value is float (per test expectation)
+    # find min value
+    min_value = min(temps_float)
+
+    # Find last index where min_value appears
+    for i in range(len(temps_float) - 1, -1, -1):
+        if temps_float[i] == min_value:
+            return (min_value), i
 
 
 def find_max(weather_data):
@@ -122,7 +133,18 @@ def find_max(weather_data):
         The maximum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
     """
 
-    pass
+    if not weather_data:
+        return ()
+    
+    # Convert all values to float for comparison
+    temps_float = [float(value) for value in weather_data]
+
+    max_value = max(temps_float)
+
+    for num in range(len(temps_float) - 1, -1, -1):
+        if temps_float[num] == max_value:
+            return float(max_value), num  # Ensure value is float (per test expectation)
+
 
 
 
@@ -134,8 +156,38 @@ def generate_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    pass
+    
+    if not weather_data:
+        return "No weather data available.\n"
 
+    num_days = len(weather_data)
+
+    # Extract min and max temperatures directly (already in Celsius)
+    min_temps = [convert_f_to_c(day[1]) for day in weather_data]
+    max_temps = [convert_f_to_c(day[2]) for day in weather_data]
+
+    # Find lowest and highest temps and their last positions
+    min_temp, min_index = find_min(min_temps)
+    max_temp, max_index = find_max(max_temps)
+
+    # Get corresponding dates
+    min_date = convert_date(weather_data[min_index][0])
+    max_date = convert_date(weather_data[max_index][0])
+
+    # Calculate averages
+    avg_low = calculate_mean(min_temps)
+    avg_high = calculate_mean(max_temps)
+
+    # Build the summary string
+    summary = (
+        f"{num_days} Day Overview\n"
+        f"  The lowest temperature will be {format_temperature(min_temp)}, and will occur on {min_date}.\n"
+        f"  The highest temperature will be {format_temperature(max_temp)}, and will occur on {max_date}.\n"
+        f"  The average low this week is {format_temperature(round(avg_low, 1))}.\n"
+        f"  The average high this week is {format_temperature(round(avg_high, 1))}.\n"
+    )
+
+    return summary
 
 def generate_daily_summary(weather_data):
     """Outputs a daily summary for the given weather data.
@@ -145,4 +197,25 @@ def generate_daily_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    pass
+    if not weather_data:
+        return "No daily weather data available.\n"
+
+    # Initializes an empty list to store the daily summaries.
+    # We’ll build one string per day, then join them all at the end.
+    summary_lines = []
+
+    # Iterate over each day's data in the weather_data list.
+    for day in weather_data:
+        date = convert_date(day[0])
+        min_c = format_temperature(convert_f_to_c(day[1]))
+        max_c = format_temperature(convert_f_to_c(day[2]))
+
+        daily_summary = (
+            f"---- {date} ----\n"
+            f"  Minimum Temperature: {min_c}\n"
+            f"  Maximum Temperature: {max_c}\n"
+        )
+
+        summary_lines.append(daily_summary)
+
+    return "\n".join(summary_lines) + "\n"
