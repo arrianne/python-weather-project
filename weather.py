@@ -64,6 +64,9 @@ def calculate_mean(weather_data):
     # Add up all the numbers and divide by how many numbers there are
     return sum(weather_data) / len(weather_data)
 
+# example = [51.0, 58.2, 59.9, 52.4, 52.1, 48.4, 47.8, 53.43]
+# print(calculate_mean(example))  # Should return 30.0
+
 
 
 def load_data_from_csv(csv_file):
@@ -96,7 +99,18 @@ def find_min(weather_data):
     Returns:
         The minimum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
     """
-    pass
+
+    # Guard clause handling empty list
+    # If weather_data is empty (has no elements), then not weather_data is True.
+    if not weather_data:
+        return ()
+    # find min value
+    min_value = min(weather_data)
+
+     # Find last index where min_value appears
+    for num in range(len(weather_data) - 1, -1, -1):
+        if weather_data[num] == min_value:
+            return float(min_value), num  # Ensure value is float (per test expectation)
 
 
 def find_max(weather_data):
@@ -107,7 +121,9 @@ def find_max(weather_data):
     Returns:
         The maximum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
     """
+
     pass
+
 
 
 def generate_summary(weather_data):
