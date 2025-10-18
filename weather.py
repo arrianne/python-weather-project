@@ -74,7 +74,18 @@ def load_data_from_csv(csv_file):
     Returns:
         A list of lists, where each sublist is a (non-empty) line in the csv file.
     """
-    pass
+    with open(csv_file, "r", newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader, None)  # Skip header row - this was causing ValueError.
+        data = [
+            # Makes sure to convert temperature strings to integers
+            [row[0], int(row[1]), int(row[2])]
+            for row in reader
+            # Skip empty or incomplete rows
+            if row and len(row) >= 3
+        ]
+    return data
+
 
 
 def find_min(weather_data):
