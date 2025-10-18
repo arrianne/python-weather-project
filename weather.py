@@ -43,7 +43,8 @@ def convert_f_to_c(temp_in_fahrenheit):
     Returns:
         A float representing a temperature in degrees Celcius, rounded to 1 decimal place.
     """
-  
+    temp_in_fahrenheit = float(temp_in_fahrenheit) 
+
     # To convert Fahrenheit to Celsius, subtract 32 from the Fahrenheit temperature and then divide the result by 1.8
     temp_in_celsius = (temp_in_fahrenheit - 32) * 5.0 / 9.0
 
@@ -60,7 +61,9 @@ def calculate_mean(weather_data):
     Returns:
         A float representing the mean value.
     """
-    pass
+    # Add up all the numbers and divide by how many numbers there are
+    return sum(weather_data) / len(weather_data)
+
 
 
 def load_data_from_csv(csv_file):
